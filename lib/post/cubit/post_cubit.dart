@@ -25,14 +25,16 @@ class PostCubit extends Cubit<PostState> {
     try {
       // some delay to see the showing state of loading animation
       await Future.delayed(Duration(milliseconds: 500));
-      
+
       int start = isRefresh ? 0 : state.count;
       List<Post> items = await _repository.fetch(start: start);
 
       if(isRefresh) {
-        emit(state.copyWith(items: items));
+        //emit(state.copyWith(items: items));
+        emit(state.replace(items: items));
       } else {
-        emit(state.mergeWith(items: items));
+        //emit(state.mergeWith(items: items));
+        emit(state.append(items: items));
       }
       
       print('fetch post success');

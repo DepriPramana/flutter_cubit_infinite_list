@@ -30,6 +30,8 @@ class NewsState extends Equatable {
   NewsState startFetching() => copyWith(isFetching: true, isFetchError: false);
   NewsState stopFetching() => copyWith(isFetching: false);
   NewsState failed() => copyWith(isFetchError: true);
+  NewsState replace({List<News> items}) => copyWith(items: items, page: nextPage);
+  NewsState append({List<News> items}) => mergeWith(items: items, page: nextPage);
 
   NewsState copyWith({
     int page,

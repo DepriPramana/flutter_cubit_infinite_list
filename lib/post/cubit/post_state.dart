@@ -26,6 +26,8 @@ class PostState extends Equatable {
   PostState startFetching() => copyWith(isFetching: true, isFetchError: false);
   PostState stopFetching() => copyWith(isFetching: false);
   PostState failed() => copyWith(isFetchError: true);
+  PostState replace({List<Post> items}) => copyWith(items: items);
+  PostState append({List<Post> items}) => mergeWith(items: items);
 
   PostState copyWith({
     bool isFetching,
