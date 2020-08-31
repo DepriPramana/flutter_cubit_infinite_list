@@ -7,5 +7,6 @@ import 'package:flutter_infinite_list/post/post.dart';
 
 void main() {
   EquatableConfig.stringify = kDebugMode;
+  //runApp(AppPost());
   runApp(AppNews());
 }
