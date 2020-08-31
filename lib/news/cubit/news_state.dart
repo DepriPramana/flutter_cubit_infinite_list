@@ -46,8 +46,8 @@ class NewsState extends Equatable {
     List<News> items,
   }) {
     List<News> _mergeItems = this.items.toList();
-    items.forEach((post) { 
-      if(!_mergeItems.contains(post)) _mergeItems.add(post);
+    items.forEach((item) { 
+      if(!_mergeItems.contains(item)) _mergeItems.add(item);
     });
 
     return NewsState(
