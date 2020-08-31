@@ -1,10 +1,11 @@
-# flutter_infinite_list
+# Flutter Cubit Infinite List
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is an example of Infinite List using Cubit State Management.
+It's influenced by Bloc Infinite List Tutorial from [bloclibrary.dev] (https://bloclibrary.dev/#/flutterinfinitelisttutorial).
 
 A few resources to get you started if this is your first Flutter project:
 
