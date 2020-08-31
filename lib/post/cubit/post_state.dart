@@ -14,7 +14,7 @@ class PostState extends Equatable {
   List<Object> get props => [items, isFetching, isFetchError];
 
   @override 
-  String toString() => 'NewsState { posts: $count, isFetching: $isFetching, isFetchError: $isFetchError }';
+  String toString() => 'PostState { items: $count, isFetching: $isFetching, isFetchError: $isFetchError }';
   
   PostState({
     this.isFetching=true,
