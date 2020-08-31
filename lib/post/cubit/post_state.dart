@@ -23,6 +23,10 @@ class PostState extends Equatable {
     this.items=const [],
   });
 
+  PostState startFetching() => copyWith(isFetching: true, isFetchError: false);
+  PostState stopFetching() => copyWith(isFetching: false);
+  PostState failed() => copyWith(isFetchError: true);
+
   PostState copyWith({
     bool isFetching,
     bool isFetchError,

@@ -26,6 +26,11 @@ class NewsState extends Equatable {
   @override 
   String toString() => 'NewsState { page: $page, items: $count, isFetching: $isFetching, isFetchError: $isFetchError }';
 
+  NewsState resetPage() => copyWith(page: 0);
+  NewsState startFetching() => copyWith(isFetching: true, isFetchError: false);
+  NewsState stopFetching() => copyWith(isFetching: false);
+  NewsState failed() => copyWith(isFetchError: true);
+
   NewsState copyWith({
     int page,
     bool isFetching,

@@ -19,12 +19,15 @@ class PostCubit extends Cubit<PostState> {
 
   Future fetch({bool isRefresh=false}) async {
     print('start fetching');
-    emit(state.copyWith(isFetching: true, isFetchError: false));
+    //emit(state.copyWith(isFetching: true, isFetchError: false));
+    emit(state.startFetching());
 
     try {
       // some delay to see the showing state of loading animation
-      await Future.delayed(Duration(milliseconds: 500)); 
-      List<Post> items = await _repository.fetch(start: isRefresh ? 0 : state.count);
+      await Future.delayed(Duration(milliseconds: 500));
+      
+      int start = isRefresh ? 0 : state.count;
+      List<Post> items = await _repository.fetch(start: start);
 
       if(isRefresh) {
         emit(state.copyWith(items: items));
@@ -35,12 +38,14 @@ class PostCubit extends Cubit<PostState> {
       print('fetch post success');
     } catch(e) {
       print(e.toString());
-      emit(state.copyWith(isFetchError: true));
+      //emit(state.copyWith(isFetchError: true));
+      emit(state.failed());
       print('fetch error');
     }
     
     await Future.delayed(Duration(milliseconds: 0));
-    emit(state.copyWith(isFetching: false));
+    //emit(state.copyWith(isFetching: false));
+    emit(state.stopFetching());
     print('stop fetching');
   }
 
