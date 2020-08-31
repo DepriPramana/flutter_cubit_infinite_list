@@ -27,7 +27,7 @@ class _PostListState extends State<PostList> {
   }
 
   void _onScroll() {
-    if(_isAtBottom && _postCubit.state.canFetch) {
+    if(_isAtBottom && _postCubit.state.isNotFetching) {
       print('ready to fetch');
       _postCubit.fetch();
     }

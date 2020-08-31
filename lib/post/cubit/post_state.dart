@@ -8,7 +8,8 @@ class PostState extends Equatable {
 
   int get count => items?.length ?? 0;
   bool get isEmpty => count == 0;
-  bool get canFetch => !isFetching;
+  bool get isNotFetching => !isFetching;
+  //bool get canFetch => !isFetching;
 
   @override
   List<Object> get props => [items, isFetching, isFetchError];

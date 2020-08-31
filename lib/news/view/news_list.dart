@@ -28,7 +28,7 @@ class _NewsListState extends State<NewsList> {
   }
 
   void _onScroll() {
-    if(_isAtBottom && _cubit.state.canFetch) {
+    if(_isAtBottom && _cubit.state.isNotFetching) {
       print('ready to fetch');
       _cubit.fetch();
     }

@@ -17,7 +17,8 @@ class NewsState extends Equatable {
   int get nextPage => page + 1;
   int get count => items?.length ?? 0;
   bool get isEmpty => count == 0;
-  bool get canFetch => !isFetching;
+  bool get isNotFetching => !isFetching;
+  //bool get canFetch => notFetching;
 
   @override
   List<Object> get props => [isFetching, isFetchError, items, page];
