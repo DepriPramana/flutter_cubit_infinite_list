@@ -39,7 +39,7 @@ class NewsState extends Equatable {
     );
   }
 
-  NewsState margeWith({
+  NewsState mergeWith({
     int page,
     bool isFetching,
     bool isFetchError,

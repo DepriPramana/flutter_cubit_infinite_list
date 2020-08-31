@@ -34,7 +34,7 @@ class PostState extends Equatable {
     );
   }
 
-  PostState margeWith({
+  PostState mergeWith({
     bool isFetching,
     bool isFetchError,
     List<Post> items,

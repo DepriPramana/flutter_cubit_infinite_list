@@ -28,7 +28,7 @@ class NewsCubit extends Cubit<NewsState> {
       if(isRefresh) {
         emit(state.copyWith(items: items, page: state.nextPage));
       } else {
-        emit(state.margeWith(items: items, page: state.nextPage));
+        emit(state.mergeWith(items: items, page: state.nextPage));
       }
 
       print('fetch news success');

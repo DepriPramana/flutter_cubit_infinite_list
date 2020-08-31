@@ -29,7 +29,7 @@ class PostCubit extends Cubit<PostState> {
       if(isRefresh) {
         emit(state.copyWith(items: items));
       } else {
-        emit(state.margeWith(items: items));
+        emit(state.mergeWith(items: items));
       }
       
       print('fetch post success');
