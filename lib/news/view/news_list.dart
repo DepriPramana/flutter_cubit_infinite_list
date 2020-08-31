@@ -49,8 +49,8 @@ class _NewsListState extends State<NewsList> {
         builder: (_, state) {
           if(state.isEmpty) {
             if(state.isFetching) return Center(child: CircularProgressIndicator());
-            if(state.isFetchError) return Center(child: Text('failed to fetch posts'));
-            return Center(child: Text('empty posts'));
+            if(state.isFetchError) return Center(child: Text('failed to fetch news'));
+            return Center(child: Text('empty news'));
           }
 
           return ListView.builder(
