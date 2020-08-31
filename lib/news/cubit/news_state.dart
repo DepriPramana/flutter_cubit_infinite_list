@@ -46,17 +46,17 @@ class NewsState extends Equatable {
     List<News> items,
   }) {
     // merge new data from items, to the previous data in this.items
-    List<News> _mergeItems = this.items.toList();
+    List<News> mergeItems = this.items.toList();
     items.forEach((item) { 
       // check for duplicate data from items, don't add to the this.items
-      if(!_mergeItems.contains(item)) _mergeItems.add(item);
+      if(!mergeItems.contains(item)) mergeItems.add(item);
     });
 
     return NewsState(
       page: page ?? this.page,
       isFetching: isFetching ?? this.isFetching,
       isFetchError: isFetchError ?? this.isFetchError,
-      items: _mergeItems,
+      items: mergeItems,
     );
   }
 }

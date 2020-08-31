@@ -39,8 +39,10 @@ class PostState extends Equatable {
     bool isFetchError,
     List<Post> items,
   }) {
+    // merge new data from items, to the previous data in this.items
     List<Post> mergeItems = this.items.toList();
     items.forEach((post) { 
+      // check for duplicate data from items
       if(!mergeItems.contains(post)) mergeItems.add(post);
     });
 
