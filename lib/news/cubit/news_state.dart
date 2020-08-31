@@ -45,8 +45,10 @@ class NewsState extends Equatable {
     bool isFetchError,
     List<News> items,
   }) {
+    // merge new data from items, to the previous data in this.items
     List<News> _mergeItems = this.items.toList();
     items.forEach((item) { 
+      // check for duplicate data from items, don't add to the this.items
       if(!_mergeItems.contains(item)) _mergeItems.add(item);
     });
 
