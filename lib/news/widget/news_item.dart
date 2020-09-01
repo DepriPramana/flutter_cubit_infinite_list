@@ -23,7 +23,7 @@ class NewsItem extends StatelessWidget {
       child: Image(image: image),
     ),
     placeholder: (_, __) => _placeholder,
-    errorWidget: (_, __, ___) => _placeholder,
+    errorWidget: (_, __, ___) => Container(),
     fadeInDuration: Duration(milliseconds: 250),
     fadeOutDuration: Duration(milliseconds: 250),
   );
