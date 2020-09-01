@@ -10,26 +10,27 @@ class PostList extends StatefulWidget {
 
 class _PostListState extends State<PostList> {
   ScrollController _scrollController = ScrollController();
-  PostCubit _postCubit;
+  PostCubit _cubit;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _postCubit = context.cubit<PostCubit>();
-    _postCubit.init();
+    _cubit = context.cubit<PostCubit>();
+    _cubit.init();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _cubit.close();
     super.dispose();
   }
 
   void _onScroll() {
-    if(_isAtBottom && _postCubit.state.isNotFetching) {
+    if(_isAtBottom && _cubit.state.isNotFetching) {
       print('ready to fetch');
-      _postCubit.fetch();
+      _cubit.fetch();
     }
   }
 
@@ -43,7 +44,7 @@ class _PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => _postCubit.refresh(),
+      onRefresh: () => _cubit.refresh(),
       child: CubitBuilder<PostCubit, PostState>(
         builder: (_, state) {
           if(state.isEmpty) {

@@ -24,6 +24,7 @@ class _NewsListState extends State<NewsList> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _cubit.close();
     super.dispose();
   }
 
