@@ -47,18 +47,22 @@ class _PostListState extends State<PostList> {
       onRefresh: () => _cubit.refresh(),
       child: CubitBuilder<PostCubit, PostState>(
         builder: (_, state) {
-          if(state.isEmpty) {
+          /* if(state.isEmpty) {
             if(state.isFetching) return Center(child: CircularProgressIndicator());
             if(state.isFetchError) return Center(child: Text('failed to fetch posts'));
             return Center(child: Text('empty posts'));
-          }
+          } */
+
+          if(state.isShowLoader) return Center(child: CircularProgressIndicator());
+          if(state.isShowError) return Center(child: Text('failed to fetch posts'));
+          if(state.isShowEmpty) return Center(child: Text('empty posts'));
 
           return ListView.builder(
             controller: _scrollController,
             itemCount: state.count + 1,
             itemBuilder: (_, index) {
               if(index < state.count) return PostItem(post: state.items[index]);
-              if(state.isFetching) return BottomLoader();
+              if(state.isShowBottomLoader) return BottomLoader();
               return Container();
             },
           );

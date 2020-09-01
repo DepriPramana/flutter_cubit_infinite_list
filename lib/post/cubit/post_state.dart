@@ -11,6 +11,11 @@ class PostState extends Equatable {
   bool get isNotFetching => !isFetching;
   //bool get canFetch => !isFetching;
 
+  bool get isShowLoader => isEmpty && isFetching;
+  bool get isShowError => isEmpty && isFetchError;
+  bool get isShowEmpty => isEmpty && isNotFetching && !isFetchError;
+  bool get isShowBottomLoader => !isEmpty && isFetching;
+
   @override
   List<Object> get props => [items, isFetching, isFetchError];
 
