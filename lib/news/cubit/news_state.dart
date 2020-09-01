@@ -18,6 +18,10 @@ class NewsState extends Equatable {
   int get count => items?.length ?? 0;
   bool get isEmpty => count == 0;
   bool get isNotFetching => !isFetching;
+  bool get isShowLoader => isEmpty && isFetching;
+  bool get isShowError => isEmpty && isFetchError;
+  bool get isShowEmpty => isEmpty && isNotFetching && !isFetchError;
+  bool get isShowBottomLoader => !isEmpty && isFetching;
   //bool get canFetch => !isFetching;
 
   @override

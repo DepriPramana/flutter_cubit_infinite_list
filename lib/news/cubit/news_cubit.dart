@@ -26,7 +26,7 @@ class NewsCubit extends Cubit<NewsState> {
     try {
       int page = state.nextPage;
       List<News> items = await _repository.fetch(page: page);
-
+      
       isRefresh 
         ? emit(state.replace(items: items)) 
         : emit(state.append(items: items));

@@ -47,18 +47,22 @@ class _NewsListState extends State<NewsList> {
       onRefresh: () => _cubit.refresh(),
       child: CubitBuilder<NewsCubit, NewsState>(
         builder: (_, state) {
-          if(state.isEmpty) {
+          /* if(state.isEmpty) {
             if(state.isFetching) return Center(child: CircularProgressIndicator());
             if(state.isFetchError) return Center(child: Text('failed to fetch news'));
             return Center(child: Text('empty news'));
-          }
-
+          } */
+          
+          if(state.isShowLoader) return Center(child: CircularProgressIndicator());
+          if(state.isShowError) return Center(child: Text('failed to fetch news'));
+          if(state.isShowEmpty) return Center(child: Text('empty news'));
+          
           return ListView.builder(
             controller: _scrollController,
             itemCount: state.count + 1,
             itemBuilder: (_, index) {
               if(index < state.count) return NewsItem(item: state.items[index]);
-              if(state.isFetching) return BottomLoader();
+              if(state.isShowBottomLoader) return BottomLoader();
               return Container();
             },
           );
