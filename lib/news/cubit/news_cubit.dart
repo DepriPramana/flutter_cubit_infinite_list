@@ -27,15 +27,17 @@ class NewsCubit extends Cubit<NewsState> {
     try {
       int page = state.nextPage;
       List<News> items = await _repository.fetch(page: page);
-      
-      if(isRefresh) {
-        //emit(state.copyWith(items: items, page: page));
-        emit(state.replace(items: items));
-      } else {
-        //emit(state.mergeWith(items: items, page: page));
-        emit(state.append(items: items));
-      }
 
+      isRefresh 
+        ? emit(state.replace(items: items)) 
+        : emit(state.append(items: items));
+      
+      /* if(isRefresh) {
+        emit(state.copyWith(items: items, page: page));
+      } else {
+        emit(state.mergeWith(items: items, page: page));
+      } */
+      
       print('fetch news success');
     } catch(e) {
       print(e.toString());
