@@ -49,10 +49,16 @@ class PostState extends Equatable {
   }) {
     // merge new data from items, to the previous data in this.items
     List<Post> mergeItems = this.items.toList();
-    items.forEach((item) { 
+    items.forEach((item) {
+      // only add item if it's not already exists in mergeItems
+      bool isNotDuplicate = mergeItems.indexWhere((mItem) => mItem.id == item.id) < 0;
+      if(isNotDuplicate) mergeItems.add(item);
+    });
+
+    /* items.forEach((item) { 
       // check for duplicate data from items
       if(!mergeItems.contains(item)) mergeItems.add(item);
-    });
+    }); */
 
     return PostState(
       isFetching: isFetching ?? this.isFetching,
