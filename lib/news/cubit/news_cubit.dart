@@ -9,7 +9,6 @@ class NewsCubit extends Cubit<NewsState> {
   final NewsRepository _repository = NewsRepository();
 
   Future init() async {
-    emit(NewsState());
     await fetch();
   }
 
@@ -37,7 +36,7 @@ class NewsCubit extends Cubit<NewsState> {
       } else {
         emit(state.mergeWith(items: items, page: page));
       } */
-      
+
       print('fetch news success');
     } catch(e) {
       print(e.toString());

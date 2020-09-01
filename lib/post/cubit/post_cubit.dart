@@ -9,7 +9,6 @@ class PostCubit extends Cubit<PostState> {
   final PostRepository _repository = PostRepository();
 
   Future init() async {
-    emit(PostState());
     await fetch();
   }
 
