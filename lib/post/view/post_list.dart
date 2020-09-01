@@ -54,9 +54,9 @@ class _PostListState extends State<PostList> {
 
           return ListView.builder(
             controller: _scrollController,
-            itemCount: state.items.length + 1,
+            itemCount: state.count + 1,
             itemBuilder: (_, index) {
-              if(index < state.items.length) return PostItem(post: state.items[index]);
+              if(index < state.count) return PostItem(post: state.items[index]);
               if(state.isFetching) return BottomLoader();
               return Container();
             },

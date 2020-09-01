@@ -55,9 +55,9 @@ class _NewsListState extends State<NewsList> {
 
           return ListView.builder(
             controller: _scrollController,
-            itemCount: state.items.length + 1,
+            itemCount: state.count + 1,
             itemBuilder: (_, index) {
-              if(index < state.items.length) return NewsItem(item: state.items[index]);
+              if(index < state.count) return NewsItem(item: state.items[index]);
               if(state.isFetching) return BottomLoader();
               return Container();
             },

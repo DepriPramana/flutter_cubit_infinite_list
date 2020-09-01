@@ -21,10 +21,11 @@ class NewsState extends Equatable {
   //bool get canFetch => !isFetching;
 
   @override
-  List<Object> get props => [isFetching, isFetchError, items, page];
+  List<Object> get props => [page, items, isFetching, isFetchError];
 
   @override 
-  String toString() => 'NewsState { page: $page, items: $count, isFetching: $isFetching, isFetchError: $isFetchError }';
+  String toString() => 
+    'NewsState { page: $page, items: $count, isFetching: $isFetching, isFetchError: $isFetchError }';
 
   NewsState resetPage() => copyWith(page: 0);
   NewsState startFetching() => copyWith(isFetching: true, isFetchError: false);
