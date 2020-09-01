@@ -24,6 +24,7 @@ class PostCubit extends Cubit<PostState> {
 
     try {
       // some delay to see the showing state of loading animation
+      // remove this in production
       await Future.delayed(Duration(milliseconds: 500));
 
       int start = isRefresh ? 0 : state.count;
