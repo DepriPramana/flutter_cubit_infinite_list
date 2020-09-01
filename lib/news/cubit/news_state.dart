@@ -67,10 +67,10 @@ class NewsState extends Equatable {
       if(!mergeItems.contains(item)) mergeItems.add(item);
     }); */
 
-    return NewsState(
-      page: page ?? this.page,
-      isFetching: isFetching ?? this.isFetching,
-      isFetchError: isFetchError ?? this.isFetchError,
+    return copyWith(
+      page: page,
+      isFetching: isFetching,
+      isFetchError: isFetchError,
       items: mergeItems,
     );
   }

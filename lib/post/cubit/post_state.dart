@@ -60,9 +60,9 @@ class PostState extends Equatable {
       if(!mergeItems.contains(item)) mergeItems.add(item);
     }); */
 
-    return PostState(
-      isFetching: isFetching ?? this.isFetching,
-      isFetchError: isFetchError ?? this.isFetchError,
+    return copyWith(
+      isFetching: isFetching,
+      isFetchError: isFetchError,
       items: mergeItems,
     );
   }
