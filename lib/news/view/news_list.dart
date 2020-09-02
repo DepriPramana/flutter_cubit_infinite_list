@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_infinite_list/news/controller/scroll.dart';
 import 'package:flutter_infinite_list/news/cubit/news_cubit.dart';
 import 'package:flutter_infinite_list/news/cubit/news_state.dart';
 import 'package:flutter_infinite_list/news/widget/bottom_loader.dart';
@@ -11,8 +12,9 @@ class NewsList extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsList> {
-  ScrollController _scrollController = ScrollController();
+  CheckScrollController _scrollController = CheckScrollController();
   NewsCubit get _cubit => context.cubit<NewsCubit>();
+  bool get _canFetch => _scrollController.isAtBottom && _cubit.state.isNotFetching;
 
   @override
   void initState() {
@@ -29,18 +31,19 @@ class _NewsListState extends State<NewsList> {
   }
 
   void _onScroll() {
-    if(_isAtBottom && _cubit.state.isNotFetching) {
+    if(_canFetch) _cubit.fetch();
+    /* if(_isAtBottom && _cubit.state.isNotFetching) {
       print('ready to fetch');
       _cubit.fetch();
-    }
+    } */
   }
 
-  bool get _isAtBottom {
+  /* bool get _isAtBottom {
     final offsetFromBottom = 25;
     final currentScroll = _scrollController.offset;
     final maxScroll = _scrollController.position.maxScrollExtent;
     return currentScroll >= maxScroll - offsetFromBottom;
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
