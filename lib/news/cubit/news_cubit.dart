@@ -15,17 +15,17 @@ class NewsCubit extends Cubit<NewsState> {
 
   Future refresh() async {
     emit(state.resetPage());
-    await fetch(isRefresh: true);
+    await fetch();
   }
 
-  Future fetch({bool isRefresh=false}) async {
+  Future fetch() async {
     emit(state.startFetching());
 
     try {
       int page = state.nextPage;
       List<News> items = await _repository.fetch(page: page);
       
-      isRefresh 
+      page == 1 
         ? emit(state.replace(items: items)) 
         : emit(state.append(items: items));
       
