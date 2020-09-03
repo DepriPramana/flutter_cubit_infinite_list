@@ -20,7 +20,22 @@ class _NewsListState extends State<NewsList> {
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     _cubit.init();
+  }
+
+  void _onScroll() {
+    ScrollDirection _direction = _scrollController.position.userScrollDirection;
+    bool _isScrollDown = _direction == ScrollDirection.reverse;
+    
+    // only fetch new items if user scroll to the bottom of list 
+    // at down direction and isNotFetching
+    bool _isFetch = 
+      _isScrollDown && 
+      _scrollController.isAtBottom && 
+      _cubit.state.isNotFetching;
+    
+    if(_isFetch) _cubit.fetch();
   }
 
   @override
@@ -36,40 +51,24 @@ class _NewsListState extends State<NewsList> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollInfo) {
-        ScrollDirection _direction = _scrollController.position.userScrollDirection;
-        bool _isScrollDown = _direction == ScrollDirection.reverse;
-        
-        // only fetch new items if user scroll to the bottom of list 
-        // at down direction and isNotFetching
-        bool _isFetch = 
-          _isScrollDown && 
-          _scrollController.isAtBottom && 
-          _cubit.state.isNotFetching;
-        
-        if(_isFetch) _cubit.fetch();
-        return false;
-      },
-      child: RefreshIndicator(
-        onRefresh: () => _cubit.refresh(),
-        child: CubitBuilder<NewsCubit, NewsState>(
-          builder: (_, state) {
-            if(state.isShowLoader) return _loader;
-            if(state.isShowError) return _error;
-            if(state.isShowEmpty) return _empty;
-            
-            return ListView.builder(
-              controller: _scrollController,
-              itemCount: state.count + 1,
-              itemBuilder: (_, index) {
-                if(index < state.count) return NewsItem(item: state.items[index]);
-                if(state.isShowBottomLoader) return BottomLoader();
-                return Container();
-              },
-            );
-          },
-        ),
+    return RefreshIndicator(
+      onRefresh: () => _cubit.refresh(),
+      child: CubitBuilder<NewsCubit, NewsState>(
+        builder: (_, state) {
+          if(state.isShowLoader) return _loader;
+          if(state.isShowError) return _error;
+          if(state.isShowEmpty) return _empty;
+          
+          return ListView.builder(
+            controller: _scrollController,
+            itemCount: state.count + 1,
+            itemBuilder: (_, index) {
+              if(index < state.count) return NewsItem(item: state.items[index]);
+              if(state.isShowBottomLoader) return BottomLoader();
+              return Container();
+            },
+          );
+        },
       ),
     );
   }
