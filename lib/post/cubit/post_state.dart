@@ -9,7 +9,6 @@ class PostState extends Equatable {
   int get count => items?.length ?? 0;
   bool get isEmpty => count == 0;
   bool get isNotFetching => !isFetching;
-  //bool get canFetch => !isFetching;
 
   bool get isShowLoader => isEmpty && isFetching;
   bool get isShowError => isEmpty && isFetchError;
@@ -29,6 +28,7 @@ class PostState extends Equatable {
     this.items=const [],
   });
 
+  PostState reset() => copyWith(isFetchError: false, items: []);
   PostState startFetching() => copyWith(isFetching: true, isFetchError: false);
   PostState stopFetching() => copyWith(isFetching: false);
   PostState failed() => copyWith(isFetchError: true);

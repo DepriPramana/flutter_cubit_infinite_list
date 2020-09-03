@@ -17,13 +17,14 @@ class NewsState extends Equatable {
   int get nextPage => page + 1;
   int get count => items?.length ?? 0;
   bool get isEmpty => count == 0;
+  bool get isNotEmpty => count > 0;
   bool get isNotFetching => !isFetching;
-  //bool get canFetch => !isFetching;
 
+  // widget showing logic, computed on the fly according to state data
   bool get isShowLoader => isEmpty && isFetching;
   bool get isShowError => isEmpty && isFetchError;
   bool get isShowEmpty => isEmpty && isNotFetching && !isFetchError;
-  bool get isShowBottomLoader => !isEmpty && isFetching;
+  bool get isShowBottomLoader => isNotEmpty && isFetching;
 
   @override
   List<Object> get props => [page, items, isFetching, isFetchError];
@@ -32,12 +33,29 @@ class NewsState extends Equatable {
   String toString() => 
     'NewsState { page: $page, items: $count, isFetching: $isFetching, isFetchError: $isFetchError }';
 
+  NewsState reset() => copyWith(page: 0, isFetchError: false, items: []);
   NewsState resetPage() => copyWith(page: 0);
   NewsState startFetching() => copyWith(isFetching: true, isFetchError: false);
   NewsState stopFetching() => copyWith(isFetching: false);
   NewsState failed() => copyWith(isFetchError: true);
-  NewsState replace({List<News> items}) => copyWith(items: items, page: nextPage);
-  NewsState append({List<News> items}) => mergeWith(items: items, page: nextPage);
+
+  NewsState replace({List<News> items}) => copyWith(items: items, page: 1);
+  NewsState append({List<News> items}) {
+    // append new data from items, to the previous data in this.items
+    List<News> mergeItems = this.items.toList();
+    items?.forEach((item) {
+      // only add item if it's not already exists in mergeItems
+      bool isNotDuplicate = mergeItems.indexWhere((mItem) => mItem.id == item.id) < 0;
+      if(isNotDuplicate) mergeItems.add(item);
+    });
+    
+    return copyWith(
+      page: items.isNotEmpty ? nextPage : this.page,
+      items: mergeItems,
+      isFetching: isFetching,
+      isFetchError: isFetchError,
+    );
+  }
 
   NewsState copyWith({
     int page,
@@ -50,33 +68,6 @@ class NewsState extends Equatable {
       isFetching: isFetching ?? this.isFetching,
       isFetchError: isFetchError ?? this.isFetchError,
       items: items ?? this.items,
-    );
-  }
-
-  NewsState mergeWith({
-    int page,
-    bool isFetching,
-    bool isFetchError,
-    List<News> items,
-  }) {
-    // merge new data from items, to the previous data in this.items
-    List<News> mergeItems = this.items.toList();
-    items.forEach((item) {
-      // only add item if it's not already exists in mergeItems
-      bool isNotDuplicate = mergeItems.indexWhere((mItem) => mItem.id == item.id) < 0;
-      if(isNotDuplicate) mergeItems.add(item);
-    });
-
-    /* items.forEach((item) { 
-      // check for duplicate data from items, don't add to the this.items
-      if(!mergeItems.contains(item)) mergeItems.add(item);
-    }); */
-
-    return copyWith(
-      page: page,
-      isFetching: isFetching,
-      isFetchError: isFetchError,
-      items: mergeItems,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_infinite_list/news/controller/scroll.dart';
 import 'package:flutter_infinite_list/post/cubit/cubit.dart';
 import 'package:flutter_infinite_list/post/widget/widget.dart';
 
@@ -9,15 +10,24 @@ class PostList extends StatefulWidget {
 }
 
 class _PostListState extends State<PostList> {
-  ScrollController _scrollController = ScrollController();
-  PostCubit _cubit;
+
+  CheckScrollController _scrollController = CheckScrollController();
+  PostCubit get _cubit => context.cubit<PostCubit>();
+  
+  bool get _isReadyToFetch => 
+    _scrollController.isAtBottom && _cubit.state.isNotFetching;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
-    _cubit = context.cubit<PostCubit>();
+    _initScroll();
     _cubit.init();
+  }
+
+  void _initScroll() {
+    _scrollController.addListener(() {
+      if(_isReadyToFetch) _cubit.fetch();
+    });
   }
 
   @override
@@ -27,32 +37,12 @@ class _PostListState extends State<PostList> {
     super.dispose();
   }
 
-  void _onScroll() {
-    if(_isAtBottom && _cubit.state.isNotFetching) {
-      print('ready to fetch');
-      _cubit.fetch();
-    }
-  }
-
-  bool get _isAtBottom {
-    final offsetFromBottom = 25;
-    final currentScroll = _scrollController.offset;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    return currentScroll >= maxScroll - offsetFromBottom;
-  }
-
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => _cubit.refresh(),
       child: CubitBuilder<PostCubit, PostState>(
         builder: (_, state) {
-          /* if(state.isEmpty) {
-            if(state.isFetching) return Center(child: CircularProgressIndicator());
-            if(state.isFetchError) return Center(child: Text('failed to fetch posts'));
-            return Center(child: Text('empty posts'));
-          } */
-
           if(state.isShowLoader) return Center(child: CircularProgressIndicator());
           if(state.isShowError) return Center(child: Text('failed to fetch posts'));
           if(state.isShowEmpty) return Center(child: Text('empty posts'));

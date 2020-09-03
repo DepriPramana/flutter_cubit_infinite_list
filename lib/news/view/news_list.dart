@@ -12,15 +12,24 @@ class NewsList extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsList> {
+  
   CheckScrollController _scrollController = CheckScrollController();
   NewsCubit get _cubit => context.cubit<NewsCubit>();
-  bool get _canFetch => _scrollController.isAtBottom && _cubit.state.isNotFetching;
+
+  bool get _isReadyToFetch => 
+    _scrollController.isAtBottom && _cubit.state.isNotFetching;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
+    _initScroll();
     _cubit.init();
+  }
+
+  void _initScroll() {
+    _scrollController.addListener(() {
+      if(_isReadyToFetch) _cubit.fetch();
+    });
   }
 
   @override
@@ -30,20 +39,9 @@ class _NewsListState extends State<NewsList> {
     super.dispose();
   }
 
-  void _onScroll() {
-    if(_canFetch) _cubit.fetch();
-    /* if(_isAtBottom && _cubit.state.isNotFetching) {
-      print('ready to fetch');
-      _cubit.fetch();
-    } */
-  }
-
-  /* bool get _isAtBottom {
-    final offsetFromBottom = 25;
-    final currentScroll = _scrollController.offset;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    return currentScroll >= maxScroll - offsetFromBottom;
-  } */
+  Widget get _loader => Center(child: CircularProgressIndicator());
+  Widget get _error => Center(child: Text('failed to fetch news'));
+  Widget get _empty => Center(child: Text('empty news'));
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +49,9 @@ class _NewsListState extends State<NewsList> {
       onRefresh: () => _cubit.refresh(),
       child: CubitBuilder<NewsCubit, NewsState>(
         builder: (_, state) {
-          /* if(state.isEmpty) {
-            if(state.isFetching) return Center(child: CircularProgressIndicator());
-            if(state.isFetchError) return Center(child: Text('failed to fetch news'));
-            return Center(child: Text('empty news'));
-          } */
-          
-          if(state.isShowLoader) return Center(child: CircularProgressIndicator());
-          if(state.isShowError) return Center(child: Text('failed to fetch news'));
-          if(state.isShowEmpty) return Center(child: Text('empty news'));
+          if(state.isShowLoader) return _loader;
+          if(state.isShowError) return _error;
+          if(state.isShowEmpty) return _empty;
           
           return ListView.builder(
             controller: _scrollController,

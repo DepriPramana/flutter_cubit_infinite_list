@@ -9,6 +9,7 @@ class PostCubit extends Cubit<PostState> {
   final PostRepository _repository = PostRepository();
 
   Future init() async {
+    emit(state.reset());
     await fetch();
   }
 
@@ -17,8 +18,6 @@ class PostCubit extends Cubit<PostState> {
   }
 
   Future fetch({bool isRefresh=false}) async {
-    print('start fetching');
-    //emit(state.copyWith(isFetching: true, isFetchError: false));
     emit(state.startFetching());
 
     try {
@@ -33,24 +32,12 @@ class PostCubit extends Cubit<PostState> {
         ? emit(state.replace(items: items)) 
         : emit(state.append(items: items));
 
-      /* if(isRefresh) {
-        emit(state.copyWith(items: items));
-      } else {
-        emit(state.mergeWith(items: items));
-      } */
-      
-      print('fetch post success');
-    } catch(e) {
-      print(e.toString());
-      //emit(state.copyWith(isFetchError: true));
+    } catch(_) {
       emit(state.failed());
-      print('fetch error');
     }
     
     await Future.delayed(Duration(milliseconds: 0));
-    //emit(state.copyWith(isFetching: false));
     emit(state.stopFetching());
-    print('stop fetching');
   }
 
   @override
